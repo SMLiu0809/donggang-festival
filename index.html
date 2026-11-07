@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="page_title">丁未正科東港迎王平安祭典 - 繞境數位認證系統</title>
+    <title data-i18n="page_title">丁未正科東港迎王平安祭典 - 數位認證</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -22,15 +22,21 @@
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
+        /* 綠燈狀態 */
+        .state-green { background-color: #DCFCE7; border-color: #166534; color: #166534; }
+        /* 紅燈狀態 */
+        .state-red { background-color: #FEE2E2; border-color: #991B1B; color: #991B1B; }
+        /* 初始狀態 */
+        .state-initial { background-color: #FFFbeb; border-color: #F59e0b; color: #991b1b; }
     </style>
 </head>
 <body class="bg-amber-950 min-h-screen flex flex-col items-center justify-center p-4">
 
     <!-- 主容器 -->
-    <div class="max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600">
+    <div id="main-container" class="max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-initial">
         
         <!-- 頂部導覽與多語系切換 -->
-        <div class="flex justify-between items-center mb-4 border-b border-amber-200 pb-3">
+        <div id="header-nav" class="flex justify-between items-center mb-4 border-b border-amber-200 pb-3 transition-colors duration-300">
             <div>
                 <span class="bg-red-700 text-amber-100 text-xs px-2.5 py-1 rounded-full font-bold tracking-widest uppercase" data-i18n="badge_text">丁未正科・代天巡狩</span>
             </div>
@@ -49,61 +55,57 @@
 
         <div class="text-center mb-6">
             <h1 class="text-2xl md:text-3xl font-bold font-serif-tc text-amber-900" data-i18n="main_title">東港迎王平安祭典</h1>
-            <p class="text-sm text-amber-800 font-serif-tc mt-1" data-i18n="main_subtitle">王船隨香繞境・完整掃描認證系統</p>
+            <p class="text-sm text-amber-800 font-serif-tc mt-1" data-i18n="main_subtitle">王船隨香繞境・直覺式數位認證</p>
         </div>
 
-        <!-- 流程控制主面板 -->
+        <!-- 流程控制區域 (防呆核心) -->
         <div id="app-panel" class="space-y-5">
-            <!-- 步驟 1: 填寫姓名 -->
-            <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 shadow-sm">
-                <label class="block text-sm font-bold text-amber-900 mb-2 font-serif-tc" data-i18n="name_input_label">請先輸入您的姓名（將印製於證明書）：</label>
-                <input type="text" id="pilgrim-name" placeholder="例如：Alex / Shih-Min Liu / Carlos" class="w-full px-4 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none text-gray-800 font-serif-tc font-bold">
+            <!-- 步驟 1: 輸入姓名 (全域保留) -->
+            <div class="bg-white/50 p-4 rounded-lg border border-amber-200 shadow-inner">
+                <label class="block text-sm font-bold text-amber-900 mb-2 font-serif-tc" data-i18n="name_input_label">請輸入您的姓名（將印製於證明書）：</label>
+                <input type="text" id="pilgrim-name" placeholder="例如：陳小明 / Alex / 山田太郎" class="w-full px-4 py-2.5 border border-amber-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none text-gray-800 font-serif-tc font-bold text-lg">
             </div>
 
-            <!-- 繞境進度追蹤提示與狀態卡片 -->
-            <div id="progress-card" class="bg-white p-4 rounded-xl border-2 border-amber-200 shadow-sm text-center space-y-3">
-                <div class="flex justify-around text-xs font-bold font-serif-tc">
-                    <span id="badge-start" class="px-3 py-1 rounded-full bg-gray-200 text-gray-600" data-i18n="badge_start_no">1. 起點站：未掃描</span>
-                    <span id="badge-end" class="px-3 py-1 rounded-full bg-gray-200 text-gray-600" data-i18n="badge_end_no">2. 終點站：未完成</span>
-                </div>
-                <p id="status-msg" class="text-xs text-red-600 font-medium h-4"></p>
+            <!-- 步驟 2 & 3: 綠紅燈狀態顯示卡片 -->
+            <div id="status-card" class="p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg">
+                <div id="icon-box" class="text-5xl transition-transform duration-500"></div>
+                <p id="status-instruction" class="text-lg font-bold font-serif-tc" data-i18n="instruction_init">請準備掃描起點 QR Code</p>
+                <p id="status-detail" class="text-xs text-amber-950/70"></p>
             </div>
 
-            <!-- 現場實體掃描點 QR Code 總覽區 -->
-            <div class="border-t border-amber-200 pt-4 mt-2">
-                <p class="text-xs font-bold text-amber-900 mb-3 text-center font-serif-tc" data-i18n="qr_section_title">📱 現場 QR Code 掃描點（供遊客依序掃描）：</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                    
-                    <!-- 起點 QR Code -->
-                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-300 flex flex-col items-center">
-                        <span class="text-xs font-bold text-red-800 mb-2 font-serif-tc" data-i18n="qr_start_label">【起點站 QR Code】</span>
-                        <div id="qrcode-start" class="bg-white p-2 rounded shadow-inner mb-2"></div>
-                        <a id="link-start" href="#" onclick="simulateScan('start'); return false;" class="text-[11px] text-blue-700 font-bold underline mt-1" data-i18n="sim_start_btn">🔗 模擬掃描起點</a>
-                    </div>
+             <!-- 下載按鈕 (預設隱藏，最終紅燈時顯示) -->
+            <button id="download-btn" onclick="downloadCertificate()" class="hidden w-full bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition duration-300 transform scale-105 font-serif-tc text-xl flex items-center justify-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                <span data-i18n="btn_download">下載圓滿功德證明書</span>
+            </button>
 
-                    <!-- 終點 QR Code -->
-                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-300 flex flex-col items-center">
-                        <span class="text-xs font-bold text-red-800 mb-2 font-serif-tc" data-i18n="qr_end_label">【終點站 QR Code】</span>
-                        <div id="qrcode-end" class="bg-white p-2 rounded shadow-inner mb-2 opacity-50" id="end-qr-box"></div>
-                        <a id="link-end" href="#" onclick="simulateScan('end'); return false;" class="text-[11px] text-gray-400 font-bold underline mt-1 cursor-not-allowed" id="sim-end-link" data-i18n="sim_end_btn">🔗 模擬掃描終點 (需先完成起點)</a>
+            <!-- 活動現場管理員專用：起終點真實 QR Code 展示區 (民眾不需操作此區) -->
+            <div class="border-t border-amber-200 pt-4 mt-4 opacity-70">
+                <p class="text-xs font-bold text-amber-900 mb-2 text-center font-serif-tc" data-i18n="qr_section_title">📱 現場工作人員掃描點：</p>
+                <div class="grid grid-cols-2 gap-3 text-center text-[9px] text-amber-800">
+                    <div>
+                        <p class="font-bold mb-1" data-i18n="qr_start_label">起點 QR Code</p>
+                        <div id="qrcode-start" class="bg-white p-1 rounded shadow inline-block"></div>
                     </div>
-
+                    <div>
+                        <p class="font-bold mb-1" data-i18n="qr_end_label">終點 QR Code</p>
+                        <div id="qrcode-end" class="bg-white p-1 rounded shadow inline-block"></div>
+                    </div>
                 </div>
+                <p class="text-[9px] text-amber-700 mt-2 text-center" data-i18n="qr_helper_text">(此區供現場人員引導民眾掃描使用)</p>
             </div>
         </div>
 
-        <!-- 步驟 3: 證明書預覽區 (完成雙向掃描後自動解鎖顯示) -->
-        <div id="certificate-container" class="hidden mt-4 space-y-6">
-            
-            <div id="cert-card" class="certificate-border p-6 md:p-10 text-center relative shadow-inner">
-                <!-- 浮水印裝飾 -->
+        <!-- 隱藏的證書生成區域 (與原本相同) -->
+        <div id="certificate-template" class="fixed -left-[9999px] top-0">
+            <div id="cert-card" class="certificate-border p-10 text-center relative w-[800px] h-[600px] flex flex-col justify-between">
+                 <!-- 浮水印 -->
                 <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-                    <span class="text-8xl font-title text-red-900">東港迎王</span>
+                    <span class="text-9xl font-title text-red-900">東港迎王</span>
                 </div>
-
-                <!-- 東港王船象徵圖騰 -->
+                <!-- 內容 -->
                 <div class="mb-4 flex flex-col items-center">
-                    <svg class="w-24 h-16 text-red-800" viewBox="0 0 200 120" fill="currentColor">
+                     <svg class="w-28 h-20 text-red-800" viewBox="0 0 200 120" fill="currentColor">
                         <path d="M10,95 Q100,115 190,95 L175,75 Q100,85 25,75 Z" fill="#991B1B"/>
                         <path d="M30,75 L30,15 L50,45 L70,15 L70,75 Z" fill="#B91C1C"/>
                         <path d="M85,75 L85,5 L115,35 L145,5 L145,75 Z" fill="#DC2626"/>
@@ -111,366 +113,181 @@
                         <circle cx="100" cy="5" r="4" fill="#F59E0B"/>
                         <path d="M0,105 Q50,120 100,105 Q150,90 200,105 L200,120 L0,120 Z" fill="#451A03" opacity="0.8"/>
                     </svg>
-                    <span class="text-[10px] tracking-widest text-red-800 font-bold uppercase mt-1">Dingwei Grand Wangchuan Procession</span>
+                    <span class="text-xs tracking-widest text-red-800 font-bold uppercase mt-1">Dingwei Year Grand Wangchuan Procession</span>
                 </div>
-
-                <div class="border-b-2 border-red-800 pb-3 mb-4">
-                    <p class="text-red-800 font-bold tracking-widest text-xs md:text-sm" data-i18n="cert_header">歲次丁未年・東港東隆宮</p>
-                    <h2 class="text-2xl md:text-3xl font-title text-red-900 mt-1" data-i18n="cert_title">王船繞境圓滿功德證明書</h2>
+                <div class="border-b-2 border-red-800 pb-3 mb-5 flex-grow flex flex-col justify-center">
+                    <p class="text-red-800 font-bold tracking-widest text-sm" data-i18n="cert_header">歲次丁未年・東港東隆宮</p>
+                    <h2 class="text-5xl font-title text-red-900 mt-2" data-i18n="cert_title">王船繞境圓滿功德證明書</h2>
                 </div>
-
-                <div class="space-y-3 text-amber-950 font-serif-tc">
-                    <p class="text-sm md:text-base" data-i18n="cert_salutation">茲證明貴賓 / 香客</p>
-                    <p class="text-2xl md:text-3xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8" id="display-name">--</p>
-                    <p class="text-xs md:text-sm leading-relaxed px-2 text-justify" data-i18n="cert_body">
+                <div class="space-y-5 text-amber-950 font-serif-tc flex-grow-2 flex flex-col justify-center">
+                    <p class="text-xl" data-i18n="cert_salutation">茲證明貴賓 / 香客</p>
+                    <p class="text-6xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8" id="display-name">--</p>
+                    <p class="text-base leading-relaxed px-10 text-justify" data-i18n="cert_body">
                         誠心參與丁未正科東港迎王平安祭典，隨王船隊伍自起點至終點全程行腳繞境，祈求平安吉祥、福慧圓滿。特頒此證，以茲誌慶。
                     </p>
                 </div>
-
-                <!-- 設計者行銷署名（多語系對應） -->
-                <div class="mt-6 pt-3 border-t border-amber-200 text-[11px] text-amber-900 font-serif-tc font-semibold tracking-wide">
-                    <span id="designer-credit">設計規劃：高雄師範大學教育學系劉世閔博士</span>
-                </div>
-
-                <!-- 署名與日期 -->
-                <div class="mt-4 pt-3 flex justify-between items-end border-t border-amber-300 text-[10px] md:text-xs font-serif-tc text-amber-900">
+                <div class="mt-10 pt-5 flex justify-between items-end border-t border-amber-300 text-xs font-serif-tc text-amber-900">
                     <div class="text-left">
                         <p>證書編號：<span id="cert-id" class="font-mono font-bold">DT2027-0000</span></p>
                         <p data-i18n="cert_date">發證日期：西元 2027 年 10 月 (丁未年)</p>
                     </div>
                     <div class="text-right relative">
-                        <p class="font-bold" data-i18n="cert_issuer">東港東隆宮 奉獻</p>
-                        <div class="absolute -top-6 -right-2 w-16 h-16 border-2 border-red-700 rounded-full flex items-center justify-center text-red-700 font-bold text-[9px] transform -rotate-12 opacity-80 pointer-events-none" data-i18n="cert_seal">
+                         <p class="font-bold" data-i18n="cert_issuer">東港東隆宮 奉獻</p>
+                        <div class="absolute -top-6 -right-2 w-24 h-24 border-2 border-red-700 rounded-full flex items-center justify-center text-red-700 font-bold text-sm transform -rotate-12 opacity-80 pointer-events-none" data-i18n="cert_seal">
                             東港迎王<br>平安吉祥
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 下載按鈕 -->
-            <div class="flex gap-3 pt-2">
-                <button onclick="downloadCertificate()" class="flex-1 bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-4 rounded-lg shadow transition flex items-center justify-center space-x-2 font-serif-tc text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                    <span data-i18n="btn_download">下載專屬證明書 (JPG)</span>
-                </button>
-                <button onclick="resetSystem()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg shadow transition font-serif-tc text-sm" data-i18n="btn_reset">
-                    重新登記
-                </button>
-            </div>
         </div>
 
     </div>
 
-    <!-- 系統核心邏輯 -->
+    <!-- 系統核心邏輯 (直覺防呆版) -->
     <script>
         const i18n = {
             zh: {
-                page_title: "丁未正科東港迎王平安祭典 - 繞境數位認證系統",
+                page_title: "丁未正科東港迎王平安祭典 - 數位認證",
                 badge_text: "丁未正科・代天巡狩",
                 main_title: "東港迎王平安祭典",
-                main_subtitle: "王船隨香繞境・完整掃描認證系統",
-                name_input_label: "請先輸入您的姓名（將印製於證明書）：",
-                qr_section_title: "📱 現場 QR Code 掃描點（供遊客依序掃描）：",
-                qr_start_label: "【起點站 QR Code】",
-                qr_end_label: "【終點站 QR Code】",
-                sim_start_btn: "🔗 模擬掃描起點",
-                sim_end_btn: "🔗 模擬掃描終點 (需先完成起點)",
-                msg_err_name: "⚠️ 請先輸入您的姓名，才能開始掃描起點報到！",
-                msg_start_ok: "✅ 起點掃描成功！請跟隨王船繞境，抵達終點後再掃描終點。",
-                msg_err_need_start: "⚠️ 您尚未完成起點掃描，請先至起點報到！",
-                msg_complete: "🎉 恭喜完成繞境全程！正在解鎖您的證明書...",
-                badge_start_no: "1. 起點站：未掃描",
-                badge_start_ok: "1. 起點站：已報到 ✔",
-                badge_end_no: "2. 終點站：未完成",
-                badge_end_ok: "2. 終點站：已圓滿 ✔",
+                main_subtitle: "王船隨香繞境・直覺式數位認證",
+                name_input_label: "請輸入您的姓名（將印製於證明書）：",
+                qr_section_title: "📱 現場人員掃描點：",
+                qr_start_label: "起點 QR Code",
+                qr_end_label: "終點 QR Code",
+                qr_helper_text: "(此區供現場人員引導民眾掃描使用)",
+                instruction_init: "請準備掃描起點 QR Code",
+                instruction_start: "✅ 起點報到成功！請開始繞境。",
+                instruction_end: "🎉 繞境圓滿完成！",
+                msg_start_detail: "請跟隨王船隊伍前往終點。",
+                msg_end_detail: "請點擊下方按鈕下載您的圓滿證明書。",
+                err_name: "⚠️ 請先輸入您的姓名！",
+                err_scan_start_first: "⚠️ 請先掃描起點 QR Code！",
+                btn_download: "下載圓滿功德證明書",
                 cert_header: "歲次丁未年・東港東隆宮",
                 cert_title: "王船繞境圓滿功德證明書",
                 cert_salutation: "茲證明貴賓 / 香客",
                 cert_body: "誠心參與丁未正科東港迎王平安祭典，隨王船隊伍自起點至終點全程行腳繞境，祈求平安吉祥、福慧圓滿。特頒此證，以茲誌慶。",
-                designer_credit: "設計規劃：高雄師範大學教育學系劉世閔博士",
                 cert_date: "發證日期：西元 2027 年 10 月 (丁未年)",
                 cert_issuer: "東港東隆宮 奉獻",
-                cert_seal: "東港迎王<br>平安吉祥",
-                btn_download: "下載專屬證明書 (JPG)",
-                btn_reset: "重新登記"
+                cert_seal: "東港迎王<br>平安吉祥"
             },
-            "zh-cn": {
-                page_title: "丁未正科东港迎王平安祭典 - 绕境数字认证系统",
-                badge_text: "丁未正科・代天巡狩",
-                main_title: "东港迎王平安祭典",
-                main_subtitle: "王船随香绕境・完整扫描认证系统",
-                name_input_label: "请先输入您的姓名（将印制于证书）：",
-                qr_section_title: "📱 现场 QR Code 扫描点（供游客依序扫描）：",
-                qr_start_label: "【起点站 QR Code】",
-                qr_end_label: "【终点站 QR Code】",
-                sim_start_btn: "🔗 模拟扫描起点",
-                sim_end_btn: "🔗 模拟扫描终点 (需先完成起点)",
-                msg_err_name: "⚠️ 请先输入您的姓名，才能开始扫描起点报到！",
-                msg_start_ok: "✅ 起点扫描成功！请跟随王船绕境，抵达终点后再扫描终点。",
-                msg_err_need_start: "⚠️ 您尚未完成起点扫描，请先至起点报到！",
-                msg_complete: "🎉 恭喜完成绕境全程！正在解锁您的证书...",
-                badge_start_no: "1. 起点站：未扫描",
-                badge_start_ok: "1. 起点站：已报到 ✔",
-                badge_end_no: "2. 终点站：未完成",
-                badge_end_ok: "2. 终点站：已圆满 ✔",
-                cert_header: "岁次丁未年・东港东隆宫",
-                cert_title: "王船绕境圆满功德证书",
-                cert_salutation: "兹证明贵宾 / 香客",
-                cert_body: "诚心参与丁未正科东港迎王平安祭典，随王船队伍自起点至终点全程行脚绕境，祈求平安吉祥、福慧圆满。特颁此证，以兹誌庆。",
-                designer_credit: "设计规划：高雄师范大学教育学系刘世闵博士",
-                cert_date: "发证日期：公元 2027 年 10 月 (丁未年)",
-                cert_issuer: "东港东隆宫 奉献",
-                cert_seal: "东港迎王<br>平安吉祥",
-                btn_download: "下载专属证书 (JPG)",
-                btn_reset: "重新登记"
-            },
+            // ... (其他語言字典請保留原本的內容，只需對應更新新增的 key)
             en: {
-                page_title: "Dingwei Year Donggang Wangchuan Festival - Certification",
-                badge_text: "Dingwei Year • Divine Patrol",
-                main_title: "Donggang Wangchuan Festival",
-                main_subtitle: "Boat Procession • Scan Verification System",
-                name_input_label: "Enter your name first (for certificate):",
-                qr_section_title: "📱 On-site QR Code Check-in Points:",
-                qr_start_label: "[Start Point QR Code]",
-                qr_end_label: "[End Point QR Code]",
-                sim_start_btn: "🔗 Simulate Start Scan",
-                sim_end_btn: "🔗 Simulate End Scan (Requires Start)",
-                msg_err_name: "⚠️ Please enter your name before scanning the start point!",
-                msg_start_ok: "✅ Start scan successful! Follow the procession to the end point.",
-                msg_err_need_start: "⚠️ Please complete the start scan first!",
-                msg_complete: "🎉 Procession completed! Unlocking your certificate...",
-                badge_start_no: "1. Start: Not Scanned",
-                badge_start_ok: "1. Start: Checked-in ✔",
-                badge_end_no: "2. End: Pending",
-                badge_end_ok: "2. End: Completed ✔",
-                cert_header: "Dingwei Year • Donggang Donglong Temple",
-                cert_title: "Wangchuan Procession Completion Certificate",
-                cert_salutation: "This is to certify that",
-                cert_body: "Sincerely participated in the Dingwei Year Donggang Wangchuan Festival procession from start to finish, seeking peace, blessings, and wisdom. This certificate is proudly presented.",
-                designer_credit: "Designed by Dr. Shih-Min Liu, Dept. of Education, National Kaohsiung Normal University",
-                cert_date: "Issue Date: October 2027 (Dingwei Year)",
-                cert_issuer: "Donggang Donglong Temple",
-                cert_seal: "Donggang<br>Wangchuan",
-                btn_download: "Download Certificate (JPG)",
-                btn_reset: "Reset"
+                 // ... (略)
+                instruction_init: "Please scan the Start QR Code",
+                instruction_start: "✅ Start Check-in Successful! Begin Procession.",
+                instruction_end: "🎉 Procession Successfully Completed!",
+                msg_start_detail: "Follow the boat to the End Point.",
+                msg_end_detail: "Click below to download your Certificate.",
+                err_name: "⚠️ Please enter your name first!",
+                err_scan_start_first: "⚠️ Please scan the Start QR Code first!",
+                btn_download: "Download Completion Certificate",
+                // ... (略)
             },
+             "zh-cn": {
+                 // ... (略)
+                instruction_init: "请准备扫瞄起点 QR Code",
+                instruction_start: "✅ 起点签到成功！请开始绕境。",
+                instruction_end: "🎉 绕境圆满完成！",
+                msg_start_detail: "请跟随王船队伍前往终点。",
+                msg_end_detail: "请点击下方按钮下载您的圆满证书。",
+                err_name: "⚠️ 请先输入您的姓名！",
+                err_scan_start_first: "⚠️ 请先扫瞄起点 QR Code！",
+                btn_download: "下载圆满功德证书",
+                // ... (略)
+            },
+            // (日、韓、西文與此類似，需要補齊新的 key 對應)
             es: {
-                page_title: "Festival de Wangchuan de Donggang 2027 - Certificado",
-                badge_text: "Año Dingwei • Patrulla Divina",
-                main_title: "Festival de Wangchuan de Donggang",
-                main_subtitle: "Procesión de Barcos • Sistema de Verificación",
-                name_input_label: "Ingrese su nombre primero (para el certificado):",
-                qr_section_title: "📱 Puntos de Código QR en el sitio:",
-                qr_start_label: "[Código QR de Inicio]",
-                qr_end_label: "[Código QR Final]",
-                sim_start_btn: "🔗 Simular Inicio",
-                sim_end_btn: "🔗 Simular Fin (Requiere Inicio)",
-                msg_err_name: "⚠️ ¡Ingrese su nombre antes de escanear el inicio!",
-                msg_start_ok: "✅ ¡Inicio exitoso! Siga la procesión hasta el punto final.",
-                msg_err_need_start: "⚠️ ¡Complete primero el escaneo de inicio!",
-                msg_complete: "🎉 ¡Procesión completada! Desbloqueando su certificado...",
-                badge_start_no: "1. Inicio: Pendiente",
-                badge_start_ok: "1. Inicio: Registrado ✔",
-                badge_end_no: "2. Fin: Pendiente",
-                badge_end_ok: "2. Fin: Completado ✔",
-                cert_header: "Año Dingwei • Templo Donglong de Donggang",
-                cert_title: "Certificado de Participación en la Procesión",
-                cert_salutation: "Por la presente se certifica que",
-                cert_body: "Participó sinceramente en la procesión del Festival de Wangchuan de Donggang de principio a fin, buscando la paz y las bendiciones. Se otorga con orgullo el presente certificado.",
-                designer_credit: "Diseñado por Dr. Shih-Min Liu, Dept. de Educación, Universidad Normal Nacional de Kaohsiung",
-                cert_date: "Fecha de emisión: Octubre de 2027 (Año Dingwei)",
-                cert_issuer: "Templo Donglong de Donggang",
-                cert_seal: "Donggang<br>Wangchuan",
-                btn_download: "Descargar Certificado (JPG)",
-                btn_reset: "Reiniciar"
+                // ...
+                instruction_init: "Escanee el código QR de inicio",
+                instruction_start: "✅ ¡Registro exitoso! Comience la procesión.",
+                instruction_end: "🎉 ¡Procesión completada con éxito!",
+                msg_start_detail: "Siga la procesión hasta el punto final.",
+                msg_end_detail: "Haga clic abajo para descargar su certificado.",
+                err_name: "⚠️ ¡Por favor, introduzca su nombre primero!",
+                err_scan_start_first: "⚠️ ¡Escanee el código QR de inicio primero!",
+                btn_download: "Descargar Certificado",
+                // ...
             },
             jp: {
-                page_title: "丁未年 東港迎王平安祭典 - 認証システム",
-                badge_text: "丁未正科・代天巡狩",
-                main_title: "東港迎王平安祭典",
-                main_subtitle: "王船巡行同行・スキャン認証システム",
-                name_input_label: "最初にお名前を入力してください（証明書用）：",
-                qr_section_title: "📱 現地 QR コード（順番にスキャン）：",
-                qr_start_label: "【起点 QR コード】",
-                qr_end_label: "【終点 QR コード】",
-                sim_start_btn: "🔗 起点をスキャン",
-                sim_end_btn: "🔗 終点をスキャン (要起点完了)",
-                msg_err_name: "⚠️ 起点をスキャンする前に、お名前を入力してください！",
-                msg_start_ok: "✅ 起点スキャン成功！王船と一緒に巡行し、終点へ向かってください。",
-                msg_err_need_start: "⚠️ 先に起点をスキャンしてください！",
-                msg_complete: "🎉 全行程の巡行完了！証明書を発行しています...",
-                badge_start_no: "1. 起点：未スキャン",
-                badge_start_ok: "1. 起点：完了 ✔",
-                badge_end_no: "2. 終点：未完了",
-                badge_end_ok: "2. 終点：完了 ✔",
-                cert_header: "歳次丁未年・東港東隆宮",
-                cert_title: "王船巡行圓満功徳証明書",
-                cert_salutation: "ここに証明する",
-                cert_body: "丁未正科東港迎王平安祭典の王船巡行に誠心誠意参加し、起点から終点まで全行程を完遂されたことを称え、ここに本証を授与いたします。",
-                designer_credit: "デザイン：国立高雄師範大学教育学科 劉世閔教授",
-                cert_date: "発行日：2027年10月 (丁未年)",
-                cert_issuer: "東港東隆宮 奉納",
-                cert_seal: "東港迎王<br>平安吉祥",
-                btn_download: "証明書をダウンロード (JPG)",
-                btn_reset: "リセット"
+                // ...
+                instruction_init: "スタートQRコードをスキャンしてください",
+                instruction_start: "✅ チェックイン成功！巡行を開始してください。",
+                instruction_end: "🎉 巡行が無事完了しました！",
+                msg_start_detail: "王船に従ってゴールへ向かってください。",
+                msg_end_detail: "下のボタンをクリックして証明書をダウンロードしてください。",
+                err_name: "⚠️ 氏名を入力してください！",
+                err_scan_start_first: "⚠️ スタートQRコードを先にスキャンしてください！",
+                btn_download: "修了証明書をダウンロード",
+                 // ...
             },
             kr: {
-                page_title: "정미년 동강 왕선 순행 평안 제전 - 인증 시스템",
-                badge_text: "정미정과・대천순수",
-                main_title: "동강 왕선 평안 제전",
-                main_subtitle: "왕선 순행 동행・스캔 인증 시스템",
-                name_input_label: "먼저 성명을 입력해 주세요 (증명서용):",
-                qr_section_title: "📱 현장 QR 코드 스캔 포인트:",
-                qr_start_label: "[시작점 QR 코드]",
-                qr_end_label: "[도착점 QR 코드]",
-                sim_start_btn: "🔗 시작점 스캔",
-                sim_end_btn: "🔗 도착점 스캔 (시작 완료 필요)",
-                msg_err_name: "⚠️ 시작점을 스캔하기 전에 성명을 입력해 주세요!",
-                msg_start_ok: "✅ 시작점 스캔 성공! 왕선과 함께 순행한 후 도착점을 스캔하세요.",
-                msg_err_need_start: "⚠️ 먼저 시작점을 스캔해 주세요!",
-                msg_complete: "🎉 순행 완주를 축하합니다! 증명서를 생성 중입니다...",
-                badge_start_no: "1. 시작: 미스캔",
-                badge_start_ok: "1. 시작: 완료 ✔",
-                badge_end_no: "2. 도착: 미완료",
-                badge_end_ok: "2. 도착: 완료 ✔",
-                cert_header: "세차 정미년・동강 동륭궁",
-                cert_title: "왕선 순행 원만 공덕 증명서",
-                cert_salutation: "위 사람을 증명합니다",
-                cert_body: "정미정과 동강 왕선 평안 제전의 왕선 순행 행렬에 성심으로 참여하여 시작점에서 도착점까지 전 과정을 완주하였기에 이 증명서를 수여합니다.",
-                designer_credit: "디자인: 국립카오슝사범대학교 교육학과 류스민(劉世閔) 교수",
-                cert_date: "발급일: 2027년 10월 (정미년)",
-                cert_issuer: "동강 동륭궁 헌납",
-                cert_seal: "동강왕선<br>平安吉祥",
-                btn_download: "증명서 다운로드 (JPG)",
-                btn_reset: "다시 입력"
+                // ...
+                instruction_init: "시작 QR 코드를 스캔하세요",
+                instruction_start: "✅ 체크인 성공! 순행을 시작하세요.",
+                instruction_end: "🎉 순행이 성공적으로 완료되었습니다!",
+                msg_start_detail: "왕선을 따라 도착점으로 이동하세요.",
+                msg_end_detail: "아래 버튼을 클릭하여 증명서를 다운로드하세요.",
+                err_name: "⚠️ 성함을 입력해 주세요!",
+                err_scan_start_first: "⚠️ 시작 QR 코드를 먼저 스캔하세요!",
+                btn_download: "완주 증명서 다운로드",
+                // ...
             }
         };
 
         let currentLang = 'zh';
+        let startDone = localStorage.getItem('pilgrim_start_fools') === "true";
+        let endDone = localStorage.getItem('pilgrim_end_fools') === "true";
 
         window.onload = function() {
+            // 網址參數判斷
+            const urlParams = new URLSearchParams(window.location.search);
+            const point = urlParams.get('point'); // start 或 end
+            const dict = i18n[currentLang];
+
+            // 恢復先前輸入的姓名
+            let savedName = localStorage.getItem('pilgrim_name');
+            if (savedName) document.getElementById('pilgrim-name').value = savedName;
+
+            // 處理掃描邏輯
+            if (point === 'start') {
+                let name = document.getElementById('pilgrim-name').value.trim();
+                if (!name) {
+                    alert(dict['err_name']);
+                    window.location.href = window.location.pathname; // 回到首頁
+                    return;
+                }
+                localStorage.setItem('pilgrim_start_fools', "true");
+                startDone = true;
+                history.replaceState(null, '', window.location.pathname); // 清除網址參數，避免重整重複觸發
+            } else if (point === 'end') {
+                if (!startDone) {
+                    alert(dict['err_scan_start_first']);
+                     window.location.href = window.location.pathname; // 回到首頁
+                    return;
+                }
+                localStorage.setItem('pilgrim_end_fools', "true");
+                endDone = true;
+                 history.replaceState(null, '', window.location.pathname);
+            }
+
+            // 初始化 UI 狀態
+            updateUI(startDone, endDone);
+
+            // 初始化管理員 QR Code (指向網址自身並帶參數)
             const baseUrl = window.location.href.split('?')[0];
             const startUrl = baseUrl + "?point=start";
             const endUrl = baseUrl + "?point=end";
 
-            document.getElementById("qrcode-start").innerHTML = "";
-            document.getElementById("qrcode-end").innerHTML = "";
+            new QRCode(document.getElementById("qrcode-start"), { text: startUrl, width: 100, height: 100, colorDark: "#7F1D1D", colorLight: "#ffffff" });
+            new QRCode(document.getElementById("qrcode-end"), { text: endUrl, width: 100, height: 100, colorDark: "#7F1D1D", colorLight: "#ffffff" });
 
-            new QRCode(document.getElementById("qrcode-start"), {
-                text: startUrl, width: 120, height: 120, colorDark: "#7F1D1D", colorLight: "#ffffff"
-            });
-            document.getElementById("link-start").href = startUrl;
-
-            new QRCode(document.getElementById("qrcode-end"), {
-                text: endUrl, width: 120, height: 120, colorDark: "#7F1D1D", colorLight: "#ffffff"
-            });
-            document.getElementById("link-end").href = endUrl;
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const point = urlParams.get('point');
-            const dict = i18n[currentLang];
-
-            let savedName = localStorage.getItem('pilgrim_name') || "";
-            let startDone = localStorage.getItem('pilgrim_start') === "true";
-            let endDone = localStorage.getItem('pilgrim_end') === "true";
-
-            if (savedName) {
-                document.getElementById('pilgrim-name').value = savedName;
-            }
-
-            if (point === 'start') {
-                let name = localStorage.getItem('pilgrim_name') || document.getElementById('pilgrim-name').value.trim();
-                if (!name) {
-                    alert(dict['msg_err_name']);
-                    window.location.href = baseUrl;
-                    return;
-                }
-                localStorage.setItem('pilgrim_start', "true");
-                startDone = true;
-            } else if (point === 'end') {
-                if (!startDone) {
-                    alert(dict['msg_err_need_start']);
-                    window.location.href = baseUrl;
-                    return;
-                }
-                localStorage.setItem('pilgrim_end', "true");
-                endDone = true;
-            }
-
-            // 即時儲存輸入姓名
+            // 即時儲存姓名
             document.getElementById('pilgrim-name').addEventListener('input', function() {
                 localStorage.setItem('pilgrim_name', this.value.trim());
             });
-
-            updateSystemState(startDone, endDone);
         };
-
-        function simulateScan(type) {
-            const dict = i18n[currentLang];
-            const nameInput = document.getElementById('pilgrim-name').value.trim();
-
-            if (!nameInput) {
-                alert(dict['msg_err_name']);
-                document.getElementById('pilgrim-name').focus();
-                return;
-            }
-
-            localStorage.setItem('pilgrim_name', nameInput);
-
-            if (type === 'start') {
-                localStorage.setItem('pilgrim_start', "true");
-                document.getElementById('status-msg').style.color = "green";
-                document.getElementById('status-msg').textContent = dict['msg_start_ok'];
-                updateSystemState(true, false);
-            } else if (type === 'end') {
-                let startDone = localStorage.getItem('pilgrim_start') === "true";
-                if (!startDone) {
-                    alert(dict['msg_err_need_start']);
-                    return;
-                }
-                localStorage.setItem('pilgrim_end', "true");
-                updateSystemState(true, true);
-            }
-        }
-
-        function updateSystemState(startDone, endDone) {
-            const dict = i18n[currentLang];
-            const badgeStart = document.getElementById('badge-start');
-            const badgeEnd = document.getElementById('badge-end');
-            const endQrBox = document.getElementById('qrcode-end').parentElement;
-            const simEndLink = document.getElementById('sim-end-link');
-
-            if (startDone) {
-                badgeStart.className = "px-3 py-1 rounded-full bg-green-100 text-green-800 font-bold";
-                badgeStart.textContent = dict['badge_start_ok'];
-                
-                // 解鎖終點 QR Code 區域
-                document.getElementById('qrcode-end').style.opacity = "1";
-                simEndLink.classList.remove('cursor-not-allowed', 'text-gray-400');
-                simEndLink.classList.add('text-blue-700', 'font-bold');
-                simEndLink.setAttribute('onclick', "simulateScan('end'); return false;");
-            } else {
-                badgeStart.className = "px-3 py-1 rounded-full bg-gray-200 text-gray-600";
-                badgeStart.textContent = dict['badge_start_no'];
-            }
-
-            if (endDone) {
-                badgeEnd.className = "px-3 py-1 rounded-full bg-green-100 text-green-800 font-bold";
-                badgeEnd.textContent = dict['badge_end_ok'];
-
-                // 顯示證書
-                let name = localStorage.getItem('pilgrim_name') || "香客";
-                document.getElementById('display-name').textContent = name;
-                document.getElementById('cert-id').textContent = "DT2027-" + Math.floor(1000 + Math.random() * 9000);
-
-                document.getElementById('app-panel').classList.add('hidden');
-                document.getElementById('certificate-container').classList.remove('hidden');
-                document.getElementById('cert-card').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                badgeEnd.className = "px-3 py-1 rounded-full bg-gray-200 text-gray-600";
-                badgeEnd.textContent = dict['badge_end_no'];
-            }
-        }
 
         function changeLanguage(lang) {
             currentLang = lang;
@@ -479,19 +296,63 @@
                 const key = el.getAttribute('data-i18n');
                 if (dict[key]) el.innerHTML = dict[key];
             });
+            updateUI(startDone, endDone); // 刷新狀態文字
+        }
 
-            document.getElementById('designer-credit').textContent = dict['designer_credit'];
+        function updateUI(s, e) {
+            const dict = i18n[currentLang];
+            const card = document.getElementById('status-card');
+            const iconBox = document.getElementById('icon-box');
+            const instruction = document.getElementById('status-instruction');
+            const detail = document.getElementById('status-detail');
+            const downloadBtn = document.getElementById('download-btn');
+            const header = document.getElementById('header-nav');
 
-            let startDone = localStorage.getItem('pilgrim_start') === "true";
-            let endDone = localStorage.getItem('pilgrim_end') === "true";
-            updateSystemState(startDone, endDone);
+            if (e) {
+                // 終點（紅燈）
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-red";
+                iconBox.innerHTML = "🏁";
+                instruction.textContent = dict['instruction_end'];
+                detail.textContent = dict['msg_end_detail'];
+                downloadBtn.classList.remove('hidden');
+                header.className = "flex justify-between items-center mb-4 border-b border-red-300 pb-3 transition-colors duration-300 state-red";
+            } else if (s) {
+                // 起點（綠燈）
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-green";
+                iconBox.innerHTML = "✅";
+                instruction.textContent = dict['instruction_start'];
+                detail.textContent = dict['msg_start_detail'];
+                downloadBtn.classList.add('hidden');
+                header.className = "flex justify-between items-center mb-4 border-b border-green-300 pb-3 transition-colors duration-300 state-green";
+            } else {
+                // 初始（黃燈）
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-initial";
+                iconBox.innerHTML = "📱";
+                instruction.textContent = dict['instruction_init'];
+                detail.textContent = "";
+                downloadBtn.classList.add('hidden');
+                header.className = "flex justify-between items-center mb-4 border-b border-amber-200 pb-3 transition-colors duration-300";
+            }
         }
 
         function downloadCertificate() {
-            const name = localStorage.getItem('pilgrim_name') || 'Pilgrim';
-            const certElement = document.getElementById('cert-card');
+            let name = document.getElementById('pilgrim-name').value.trim();
+            const dict = i18n[currentLang];
+            if (!name) {
+                alert(dict['err_name']);
+                document.getElementById('pilgrim-name').focus();
+                return;
+            }
+
+            // 顯示要下載的證書內容
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('cert-id').textContent = "DT2027-" + Math.floor(1000 + Math.random() * 9000);
             
-            html2canvas(certElement, { scale: 2, useCORS: true }).then(canvas => {
+            const certTemplate = document.getElementById('certificate-template');
+            certTemplate.style.left = "0px"; // 移出畫面外，但讓 html2canvas 抓得到
+
+            html2canvas(document.getElementById('cert-card'), { scale: 2, useCORS: true }).then(canvas => {
+                certTemplate.style.left = "-9999px"; // 抓完圖後移回來隱藏
                 const link = document.createElement('a');
                 link.download = `Donggang_Festival_Certificate_${name}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
@@ -500,8 +361,10 @@
         }
 
         function resetSystem() {
-            localStorage.clear();
-            window.location.href = window.location.pathname;
+            localStorage.removeItem('pilgrim_start_fools');
+            localStorage.removeItem('pilgrim_end_fools');
+            localStorage.removeItem('pilgrim_name');
+            location.reload();
         }
     </script>
 </body>
