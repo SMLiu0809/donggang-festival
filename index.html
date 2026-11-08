@@ -15,11 +15,11 @@
     <style>
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
         
-        /* 國際版證書母版樣式 (直接使用高品質圖床確保穩定載入與截圖) */
+        /* 直接讀取同資料夾的證書背景圖，完美呈現您精美的設計 */
         .certificate-container-final {
             width: 800px;
             height: 600px;
-            background-image: url('https://i.imgur.com/T9M97e7.jpg');
+            background-image: url('certificate-bg.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -222,7 +222,7 @@
             kr: {
                 page_title: "정미년 동강 왕선 순행 평안 제전 - 인증",
                 badge_text: "정미정과・대천순수",
-                main_title: "정미년 동강 왕선 순행 평안 제전",
+                main_title: "동강 왕선 순행 평안 제전",
                 main_subtitle: "왕선 순행 동행・현장 스캔 인증",
                 name_input_label: "성명을 입력해 주세요 (증명서용):",
                 qr_section_title: "📱 현장 QR 코드 스캔 포인트:",
@@ -368,7 +368,7 @@
             const templateHolder = document.getElementById('certificate-template');
             templateHolder.style.left = "0px";
 
-            // 調整 html2canvas 參數以完美允許跨域截圖
+            // 支援本地跨來源截圖
             html2canvas(certElement, { 
                 scale: 2, 
                 useCORS: true, 
