@@ -7,20 +7,21 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
     <!-- html2canvas 截圖下載用 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- QRCode.js 動態生成真實 QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
+        .font-title { font-family: 'Ma Shan Zheng', cursive; }
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
         
-        /* 結合王船意象的豪華國際版證書母版設計 */
+        /* 融合立體紙雕與溫潤木質調的頂級證書版面 */
         .certificate-container-final {
             width: 800px;
             height: 600px;
             background: linear-gradient(135deg, #FFFDF0 0%, #FDF5E6 100%);
-            border: 16px double #B8860B;
+            border: 16px double #8B4513;
             position: relative;
             box-sizing: border-box;
             overflow: hidden;
@@ -106,36 +107,37 @@
 
     </div>
 
-    <!-- 頂級大氣國際版王船證書套印區域 (隱藏於畫面外，供截圖下載使用) -->
+    <!-- 精緻王船紙雕意象證書套印區域 (隱藏於畫面外，供截圖下載使用) -->
     <div id="certificate-template" class="fixed -left-[9999px] top-0">
         <div id="cert-card-final" class="certificate-container-final p-10 text-center flex flex-col justify-between font-serif-tc text-amber-950">
             
-            <!-- 裝飾性王船意象背景圖騰框線 -->
-            <div class="absolute top-4 left-4 right-4 bottom-4 border border-amber-700/40 pointer-events-none flex flex-col justify-between p-2">
-                <div class="flex justify-between text-amber-800 font-bold text-xs tracking-widest">
-                    <span>⚓ 丁未正科・代天巡狩</span>
-                    <span>DONGGANG WANGCHUAN FESTIVAL</span>
-                </div>
-                <div class="flex justify-between text-amber-800 font-bold text-xs tracking-widest">
-                    <span>FAITH & CULTURAL HERITAGE</span>
-                    <span>平安吉祥 ‧ 福慧圓滿 ⚓</span>
-                </div>
+            <!-- 紙雕立體光影浮水印裝飾 (左側與背景呼應王船意象) -->
+            <div class="absolute -left-12 top-1/2 transform -translate-y-1/2 opacity-10 pointer-events-none">
+                <svg width="350" height="350" viewBox="0 0 200 200" fill="currentColor" class="text-amber-900">
+                    <path d="M20 140 Q 100 120 180 140 L 160 100 Q 100 90 40 100 Z" />
+                    <path d="M50 100 L 70 30 L 90 100 Z" />
+                    <path d="M85 95 L 110 20 L 135 95 Z" />
+                    <path d="M130 100 L 145 40 L 160 100 Z" />
+                </svg>
             </div>
 
             <!-- 頂部國際版標題 -->
             <div class="relative z-10 space-y-1 mt-2">
-                <p class="text-amber-800 font-bold tracking-widest text-xs uppercase">DONGGANG WANGGYE PILGRIMAGE FESTIVAL</p>
-                <h2 class="text-4xl font-bold text-red-900 tracking-wider">東港迎王平安祭典</h2>
-                <p class="text-sm font-bold text-amber-900 tracking-widest">INTERNATIONAL CULTURAL PILGRIMAGE CERTIFICATE</p>
+                <div class="flex justify-between items-center px-4 text-xs font-bold text-amber-800 uppercase tracking-widest">
+                    <span>⛵ 船藝之美・王船巡行</span>
+                    <span>The Art of Wangchuan Craft</span>
+                </div>
+                <h2 class="text-4xl font-title text-red-900 tracking-wider">東港迎王平安祭典</h2>
+                <p class="text-xs font-bold text-amber-900 tracking-widest uppercase">International Cultural Pilgrimage Certificate</p>
             </div>
 
             <!-- 中間受證者區域 -->
             <div class="relative z-10 space-y-3 my-auto">
-                <p class="text-base text-amber-900 italic">This is to certify that 茲證明</p>
+                <p class="text-base text-amber-900">This is to certify that 茲證明</p>
                 <p class="text-5xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8 py-3" id="display-name-final">--</p>
                 <p class="text-sm leading-relaxed px-10 text-justify text-amber-950 font-medium">
-                    誠心參與 2027 丁未正科東港迎王平安祭典，隨王船隊伍全程行腳隨香，祈求國泰民安、風調雨順。<br>
-                    <span class="italic text-xs text-amber-800 font-normal">Has participated in the 2027 Donggang Wangye International Cultural Pilgrimage, dedicated to Faith, Culture, Heritage, and Togetherness. May the blessings of Wangye bring peace, health and prosperity to all.</span>
+                    誠心參與 2027 丁未正科東港迎王平安祭典，隨王船隊伍全程行腳隨香，領略傳統王船工藝之美，祈求平安吉祥。<br>
+                    <span class="italic text-xs text-amber-800 font-normal">Has participated in the 2027 Donggang Wangye International Pilgrimage, experiencing the magnificent craftsmanship of Wangchuan. May the blessings of Wangye bring peace and prosperity.</span>
                 </p>
             </div>
 
@@ -146,8 +148,8 @@
                     <p>Issue Date 發證日期：October 2027 (Dingwei Year)</p>
                 </div>
                 <div class="text-center">
-                    <p class="font-bold text-amber-950">Donggang • Taiwan</p>
-                    <p class="text-[10px] text-amber-800">Authorized by Donggang Township</p>
+                    <p class="font-bold text-amber-950">高雄師範大學 劉世閔 老師總設計</p>
+                    <p class="text-[10px] text-amber-800">Donggang • Taiwan</p>
                 </div>
                 <div class="text-right relative">
                     <div class="w-16 h-16 border-2 border-red-700 rounded-full flex items-center justify-center text-red-700 font-bold text-[9px] transform -rotate-12 opacity-90 bg-red-50/50 shadow-sm">
