@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東港迎王 - 現場工作站管理介面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        .font-title { font-family: 'Ma Shan Zheng', cursive; }
+        .font-serif-tc { font-family: 'Noto Serif TC', serif; }
+        /* 綠燈狀態 */
+        .state-green { background-color: #DCFCE7; border-color: #166534; color: #166534; }
+        /* 紅燈狀態 */
+        .state-red { background-color: #FEE2E2; border-color: #991B1B; color: #991B1B; }
+    </style>
+</head>
+<body class="bg-amber-50 min-h-screen p-4 md:p-6">
+
+    <header class="text-center mb-8 border-b-2 border-amber-300 pb-4">
+        <h1 class="text-2xl md:text-3xl font-bold font-serif-tc text-amber-900">📱 東港迎王 - 現場工作站</h1>
+        <p class="text-sm text-amber-700 mt-1">專為輔助信眾登記與領證使用</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+
+        <!-- 控制面板區 -->
+        <section class="bg-white p-6 rounded-2xl shadow-xl border border-amber-200 space-y-6">
+            <h2 class="text-xl font-bold text-amber-900 font-serif-tc border-l-4 pl-3 border-red-700">1. 信眾登記作業</h2>
+            
+            <div>
+                <label class="block text-sm font-bold text-amber-800 mb-2 font-serif-tc">信眾姓名（將顯示在證書上）：</label>
+                <input type="text" id="admin-pilgrim-name" placeholder="例如：陳阿公 / 林小妹" class="w-full px-4 py-3 border-2 border-amber-300 rounded-xl focus:ring-4 focus:ring-amber-200 focus:border-amber-500 text-lg font-serif-tc font-bold">
+                <p class="text-xs text-amber-600 mt-1">* 請務必確認姓名正確</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 pt-4">
+                <!-- 起點按鈕 -->
+                <button onclick="processStart()" class="col-span-2 md:col-span-1 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-5 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-105 font-serif-tc text-lg flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>標記為【起點】(綠燈)</span>
+                </button>
+                <!-- 終點按鈕 -->
+                 <button onclick="processEnd()" class="col-span-2 md:col-span-1 w-full bg-red-700 hover:bg-red-800 text-white font-bold py-5 px-6 rounded-xl shadow-lg transition duration-150 transform hover:scale-105 font-serif-tc text-lg flex items-center justify-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    <span>標記為【終點】(紅燈)</span>
+                </button>
+            </div>
+            
+             <div class="pt-4 border-t border-amber-100 text-center">
+                <button onclick="resetForNextPerson()" class="text-sm text-amber-700 hover:text-red-700 font-medium underline flex items-center justify-center mx-auto space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    <span>清除當前資料，為下一位信眾服務</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 狀態預覽與截圖區 (工作人員確認用) -->
+        <section id="preview-section" class="bg-white p-6 rounded-2xl shadow-xl border border-amber-200 space-y-4 opacity-60 transition-opacity duration-300">
+            <h2 class="text-xl font-bold text-amber-900 font-serif-tc border-l-4 pl-3 border-red-700">2. 螢幕截圖預覽 (請截取此區塊)</h2>
+            <p class="text-xs text-red-600 font-bold">⚠️ 請確保此處顯示正確姓名與狀態，再進行手機截圖。</p>
+
+             <!-- 這裡是模擬原本 index.html 的顯示卡片，專為截圖設計 -->
+            <div id="status-card" class="p-6 rounded-xl border-2 shadow-lg transition-all duration-500 text-center space-y-3 state-initial border-amber-300 h-[250px] flex flex-col justify-center items-center">
+                <div id="icon-box" class="text-6xl transition-transform duration-500">📱</div>
+                <p id="status-instruction" class="text-2xl font-bold font-serif-tc text-amber-950">準備就緒</p>
+                <p id="display-pilgrim-name" class="text-4xl font-title text-red-900 min-h-[50px]"></p>
+                <p id="status-detail" class="text-sm text-amber-950/70 font-serif-tc"></p>
+            </div>
+            
+            <div class="bg-amber-100 p-3 rounded-lg text-xs text-amber-800 font-serif-tc">
+                <strong class="block mb-1">操作說明：</strong>
+                1. 輸入信眾姓名。
+                2. 點擊「標記為起點」➔ 卡片變綠色。
+                3. **(起點工作人員)** 手機截圖此畫面傳給信眾。
+                4. 點擊「標記為終點」➔ 卡片變紅色。
+                5. **(終點工作人員)** 點擊下方按鈕下載證書。
+            </div>
+            
+            <!-- 證書下載按鈕 (終點用) -->
+            <button id="download-btn-final" onclick="downloadCertificateFromAdmin()" class="hidden w-full bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition duration-300 font-serif-tc text-lg flex items-center justify-center space-x-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                <span>下載最終圓滿功德證明書</span>
+            </button>
+            
+        </section>
+
+    </main>
+    
+    <!-- 隱藏的證書生成區 (必須包含原本 index.html 裡面的 #certificate-template 內容，這裡為了精簡略過，請貼上您原本的) -->
+    <!-- 您原本 index.html 裡面的 <div id="certificate-template" class="fixed ..."> 必須整段複製貼到這裡 -->
+    <div id="certificate-template-holder" class="hidden">
+        <!-- [請將您原本 index.html 中 id="certificate-template" 的 div 內容完整複製貼到這裡，供後端生成圖片使用] -->
+        <!-- 例如： -->
+        <!-- <div id="cert-card" class="certificate-border p-10 text-center relative w-[800px] h-[600px] flex flex-col justify-center items-center">
+             <h2 class="text-5xl font-title text-red-900 mt-2">王船繞境圓滿功德證明書</h2>
+             <p class="text-6xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8 mt-10" id="cert-display-name">--</p>
+        </div> -->
+        <!-- (為了節省篇幅，這裡假設您已經貼上了) -->
+    </div>
+
+    <script>
+        // 簡單的本地狀態管理
+        const uiDict = {
+            zh: {
+                init_title: "準備就緒",
+                start_msg: "✅ 起點報到完成",
+                start_detail: "請隨香前往終點",
+                end_msg: "🎉 繞境圓滿完成！",
+                end_detail: "請領取您的證明書"
+            }
+        };
+        
+        const nameInput = document.getElementById('admin-pilgrim-name');
+        const previewSection = document.getElementById('preview-section');
+        const card = document.getElementById('status-card');
+        const iconBox = document.getElementById('icon-box');
+        const instruction = document.getElementById('status-instruction');
+        const nameDisplay = document.getElementById('display-pilgrim-name');
+        const detail = document.getElementById('status-detail');
+        const downloadBtn = document.getElementById('download-btn-final');
+
+        function validateName() {
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert("請先輸入信眾姓名！");
+                nameInput.focus();
+                return false;
+            }
+            return name;
+        }
+
+        function processStart() {
+            const name = validateName();
+            if (!name) return;
+
+            // 更新 UI 狀態為綠燈
+            previewSection.style.opacity = "1"; // 啟用預覽
+            card.className = "p-6 rounded-xl border-2 shadow-lg transition-all duration-500 text-center space-y-3 state-green border-green-300 h-[250px] flex flex-col justify-center items-center";
+            iconBox.innerHTML = "✅";
+            instruction.textContent = uiDict.zh.start_msg;
+            instruction.className = "text-2xl font-bold font-serif-tc text-green-900";
+            nameDisplay.textContent = name;
+            nameDisplay.className = "text-5xl font-title text-green-950 min-h-[60px] mt-2";
+            detail.textContent = uiDict.zh.start_detail;
+            downloadBtn.classList.add('hidden');
+            
+            // 同時將資料存入 localStorage，以便 index.html (備用) 或下載功能抓取
+            localStorage.setItem('pilgrim_name_admin', name);
+            localStorage.setItem('pilgrim_start_admin', "true");
+            localStorage.removeItem('pilgrim_end_admin');
+        }
+
+        function processEnd() {
+            const name = validateName();
+            if (!name) return;
+            
+            // 檢查是否已有起點紀錄 (這是防呆第二層，雖然工作人員會人工確認，但系統也防一下)
+            if (localStorage.getItem('pilgrim_start_admin') !== "true") {
+                if(!confirm("⚠️ 尚未標記起點！確定要直接標記為終點嗎？")) {
+                    return;
+                }
+            }
+
+            // 更新 UI 狀態為紅燈
+            previewSection.style.opacity = "1";
+            card.className = "p-6 rounded-xl border-2 shadow-lg transition-all duration-500 text-center space-y-3 state-red border-red-300 h-[250px] flex flex-col justify-center items-center";
+            iconBox.innerHTML = "🏁";
+            instruction.textContent = uiDict.zh.end_msg;
+            instruction.className = "text-2xl font-bold font-serif-tc text-red-900";
+            nameDisplay.textContent = name;
+            nameDisplay.className = "text-5xl font-title text-red-950 min-h-[60px] mt-2";
+            detail.textContent = uiDict.zh.end_detail;
+            downloadBtn.classList.remove('hidden'); // 顯示下載按鈕
+            
+            localStorage.setItem('pilgrim_end_admin', "true");
+        }
+
+        function resetForNextPerson() {
+            if(confirm("確定要清除畫面上的姓名與狀態，為下一位信眾服務嗎？")) {
+                nameInput.value = "";
+                previewSection.style.opacity = "0.6";
+                card.className = "p-6 rounded-xl border-2 shadow-lg transition-all duration-500 text-center space-y-3 state-initial border-amber-300 h-[250px] flex flex-col justify-center items-center";
+                iconBox.innerHTML = "📱";
+                instruction.textContent = uiDict.zh.init_title;
+                instruction.className = "text-2xl font-bold font-serif-tc text-amber-950";
+                nameDisplay.textContent = "";
+                detail.textContent = "";
+                downloadBtn.classList.add('hidden');
+                nameInput.focus();
+            }
+        }
+
+        function downloadCertificateFromAdmin() {
+            // 此函數需要連結到原本 index.html 裡的證書生成邏輯
+            // 為了讓 admin.html 也能運作，您需要將原本 index.html 中的 html2canvas 相關函數複製過來
+            // 並且確保 #certificate-template-holder 裡面有完整的證書 HTML 結構
+            
+            const name = localStorage.getItem('pilgrim_name_admin');
+             if (!name) {
+                 alert("找不到信眾姓名，請重新登記。");
+                 return;
+             }
+             
+             if (localStorage.getItem('pilgrim_end_admin') !== "true") {
+                 alert("尚未標記為終點，無法下載。");
+                 return;
+             }
+
+            // --- [將原本 index.html 中的 downloadCertificate() 函數核心邏輯複製並修改於此] ---
+            // (這裡僅做簡單範例，實際運作需依賴您完整的 HTML 結構)
+            
+            // 假設您已經將 <div id="certificate-template">...</div> 整個複製到 #certificate-template-holder 裡面
+             document.getElementById('cert-display-name').textContent = name; // 假設您 template 裡有這個 ID
+             // ... 觸發 html2canvas 下載 ...
+             alert("正在生成證書檔案，請稍候...");
+            // ------------------------------------------------------------------------------------
+        }
+    </script>
+</body>
+</html>
