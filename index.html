@@ -16,7 +16,7 @@
         .font-title { font-family: 'Ma Shan Zheng', cursive; }
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
         
-        /* 融合立體紙雕與溫潤木質調的頂級證書版面 */
+        /* 頂級典雅證書版面 */
         .certificate-container-final {
             width: 800px;
             height: 600px;
@@ -107,24 +107,32 @@
 
     </div>
 
-    <!-- 精緻王船紙雕意象證書套印區域 (隱藏於畫面外，供截圖下載使用) -->
+    <!-- 修正為三桅帆船浮水印的證書套印區域 -->
     <div id="certificate-template" class="fixed -left-[9999px] top-0">
         <div id="cert-card-final" class="certificate-container-final p-10 text-center flex flex-col justify-between font-serif-tc text-amber-950">
             
-            <!-- 紙雕立體光影浮水印裝飾 (左側與背景呼應王船意象) -->
-            <div class="absolute -left-12 top-1/2 transform -translate-y-1/2 opacity-10 pointer-events-none">
-                <svg width="350" height="350" viewBox="0 0 200 200" fill="currentColor" class="text-amber-900">
-                    <path d="M20 140 Q 100 120 180 140 L 160 100 Q 100 90 40 100 Z" />
-                    <path d="M50 100 L 70 30 L 90 100 Z" />
-                    <path d="M85 95 L 110 20 L 135 95 Z" />
-                    <path d="M130 100 L 145 40 L 160 100 Z" />
+            <!-- 三桅帆船立體紙雕精緻浮水印（左側背景，明確的三桅帆造型） -->
+            <div class="absolute -left-8 top-1/2 transform -translate-y-1/2 opacity-15 pointer-events-none">
+                <svg width="320" height="320" viewBox="0 0 240 240" fill="currentColor" class="text-amber-900">
+                    <!-- 船身 -->
+                    <path d="M30 150 Q 120 135 210 150 Q 220 170 190 185 L 50 185 Q 20 170 30 150 Z"/>
+                    <!-- 三根船桅 -->
+                    <rect x="75" y="60" width="4" height="95"/>
+                    <rect x="120" y="40" width="5" height="115"/>
+                    <rect x="165" y="70" width="4" height="85"/>
+                    <!-- 三面帆蓬 (中式帆形) -->
+                    <path d="M77 65 Q 45 80 77 115 Z"/>
+                    <path d="M122 45 Q 80 65 122 105 Z"/>
+                    <path d="M167 75 Q 140 90 167 125 Z"/>
+                    <!-- 浪花基底 -->
+                    <path d="M20 190 Q 60 180 100 190 Q 140 200 180 190 Q 210 185 220 195 L 20 195 Z"/>
                 </svg>
             </div>
 
             <!-- 頂部國際版標題 -->
             <div class="relative z-10 space-y-1 mt-2">
                 <div class="flex justify-between items-center px-4 text-xs font-bold text-amber-800 uppercase tracking-widest">
-                    <span>⛵ 船藝之美・王船巡行</span>
+                    <span>⛵ 三桅王船・巡行平安</span>
                     <span>The Art of Wangchuan Craft</span>
                 </div>
                 <h2 class="text-4xl font-title text-red-900 tracking-wider">東港迎王平安祭典</h2>
@@ -136,7 +144,7 @@
                 <p class="text-base text-amber-900">This is to certify that 茲證明</p>
                 <p class="text-5xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8 py-3" id="display-name-final">--</p>
                 <p class="text-sm leading-relaxed px-10 text-justify text-amber-950 font-medium">
-                    誠心參與 2027 丁未正科東港迎王平安祭典，隨王船隊伍全程行腳隨香，領略傳統王船工藝之美，祈求平安吉祥。<br>
+                    誠心參與 2027 丁未正科東港迎王平安祭典，隨王船隊伍全程行腳隨香，領略傳統三桅王船工藝之美，祈求平安吉祥。<br>
                     <span class="italic text-xs text-amber-800 font-normal">Has participated in the 2027 Donggang Wangye International Pilgrimage, experiencing the magnificent craftsmanship of Wangchuan. May the blessings of Wangye bring peace and prosperity.</span>
                 </p>
             </div>
