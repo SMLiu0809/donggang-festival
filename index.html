@@ -79,7 +79,7 @@
             <!-- 下載按鈕 (預設隱藏) -->
             <button id="download-btn" onclick="downloadCertificateFinal()" class="hidden w-full bg-red-700 hover:bg-red-800 text-white font-bold py-4 px-6 rounded-xl shadow-xl transition duration-300 transform scale-105 font-serif-tc text-xl flex items-center justify-center space-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                <span data-i18n="btn_download">下載圓滿功德證明書</span>
+                <span data-i18n="btn_download">下載圓滿功德證明書 (JPG圖片)</span>
             </button>
 
             <!-- 現場實體掃描點 QR Code 總覽區 -->
@@ -107,24 +107,20 @@
 
     </div>
 
-    <!-- 修正為三桅帆船浮水印的證書套印區域 -->
+    <!-- 含有三桅帆船浮水印的證書套印區域 -->
     <div id="certificate-template" class="fixed -left-[9999px] top-0">
         <div id="cert-card-final" class="certificate-container-final p-10 text-center flex flex-col justify-between font-serif-tc text-amber-950">
             
-            <!-- 三桅帆船立體紙雕精緻浮水印（左側背景，明確的三桅帆造型） -->
+            <!-- 三桅帆船立體紙雕精緻浮水印（左側背景，標準三桅帆造型） -->
             <div class="absolute -left-8 top-1/2 transform -translate-y-1/2 opacity-15 pointer-events-none">
                 <svg width="320" height="320" viewBox="0 0 240 240" fill="currentColor" class="text-amber-900">
-                    <!-- 船身 -->
                     <path d="M30 150 Q 120 135 210 150 Q 220 170 190 185 L 50 185 Q 20 170 30 150 Z"/>
-                    <!-- 三根船桅 -->
                     <rect x="75" y="60" width="4" height="95"/>
                     <rect x="120" y="40" width="5" height="115"/>
                     <rect x="165" y="70" width="4" height="85"/>
-                    <!-- 三面帆蓬 (中式帆形) -->
                     <path d="M77 65 Q 45 80 77 115 Z"/>
                     <path d="M122 45 Q 80 65 122 105 Z"/>
                     <path d="M167 75 Q 140 90 167 125 Z"/>
-                    <!-- 浪花基底 -->
                     <path d="M20 190 Q 60 180 100 190 Q 140 200 180 190 Q 210 185 220 195 L 20 195 Z"/>
                 </svg>
             </div>
@@ -188,7 +184,7 @@
                 msg_start_detail: "已記錄您的起點報到，請前往終點站。",
                 msg_end_detail: "雙向認證已完成，請點擊下方按鈕領取證明書。",
                 err_name: "⚠️ 請先在上方輸入您的姓名，才能開始報到！",
-                btn_download: "下載圓滿功德證明書 (JPG)"
+                btn_download: "下載圓滿功德證明書 (JPG圖片)"
             },
             "zh-cn": {
                 page_title: "丁未正科东港迎王平安祭典 - 数字认证",
@@ -207,7 +203,7 @@
                 msg_start_detail: "已记录您的起点报到，请前往终点站。",
                 msg_end_detail: "双向认证已完成，请点击下方按钮领取证书。",
                 err_name: "⚠️ 请先在上方输入您的姓名，才能开始报到！",
-                btn_download: "下载圆满功德证书 (JPG)"
+                btn_download: "下载圆满功德证书 (JPG图片)"
             },
             en: {
                 page_title: "Donggang Wangchuan Festival 2027 - Certification",
@@ -415,6 +411,7 @@
             const templateHolder = document.getElementById('certificate-template');
             templateHolder.style.left = "0px";
 
+            // 直接透過 html2canvas 轉換為高品質 JPG 圖片並觸發瀏覽器下載
             html2canvas(certElement, { 
                 scale: 2, 
                 useCORS: true, 
