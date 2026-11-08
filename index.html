@@ -15,13 +15,10 @@
     <style>
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
         
-        /* ---------------------------------------------------------
-         * 【新增】精美國際版證書專屬 CSS 樣式 (已放置於適當位置)
-         * --------------------------------------------------------- */
+        /* 國際版證書母版樣式 */
         .certificate-container-final {
             width: 800px;
             height: 600px;
-            /* 讀取與 index.html 同資料夾的王船證書背景圖 */
             background-image: url('certificate-bg.jpg');
             background-size: cover;
             background-position: center;
@@ -85,22 +82,22 @@
                 <span data-i18n="btn_download">下載圓滿功德證明書</span>
             </button>
 
-            <!-- 現場實體掃描點 QR Code 總覽區 -->
-            <div class="border-t border-amber-200 pt-4 mt-2 opacity-80">
+            <!-- 現場實體掃描點 QR Code 總覽區 (已修復圖片生成) -->
+            <div class="border-t border-amber-200 pt-4 mt-2">
                 <p class="text-xs font-bold text-amber-900 mb-3 text-center font-serif-tc" data-i18n="qr_section_title">📱 現場 QR Code 掃描點（供遊客依序掃描）：</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                     
                     <!-- 起點 QR Code -->
                     <div class="bg-amber-50 p-3 rounded-xl border border-amber-300 flex flex-col items-center">
                         <span class="text-xs font-bold text-red-800 mb-2 font-serif-tc" data-i18n="qr_start_label">【起點站 QR Code】</span>
-                        <div id="qrcode-start" class="bg-white p-2 rounded shadow-inner mb-2"></div>
+                        <div id="qrcode-start" class="bg-white p-2 rounded shadow-inner mb-2 flex justify-center"></div>
                         <a id="link-start" href="#" class="text-[11px] text-blue-700 font-bold underline mt-1" data-i18n="sim_start_btn">測試起點連結</a>
                     </div>
 
                     <!-- 終點 QR Code -->
                     <div class="bg-amber-50 p-3 rounded-xl border border-amber-300 flex flex-col items-center">
                         <span class="text-xs font-bold text-red-800 mb-2 font-serif-tc" data-i18n="qr_end_label">【終點站 QR Code】</span>
-                        <div id="qrcode-end" class="bg-white p-2 rounded shadow-inner mb-2"></div>
+                        <div id="qrcode-end" class="bg-white p-2 rounded shadow-inner mb-2 flex justify-center"></div>
                         <a id="link-end" href="#" class="text-[11px] text-blue-700 font-bold underline mt-1" data-i18n="sim_end_btn">測試終點連結</a>
                     </div>
 
@@ -113,17 +110,14 @@
     <!-- 精美證書套印區域 (隱藏於畫面外，供截圖下載使用) -->
     <div id="certificate-template" class="fixed -left-[9999px] top-0">
         <div id="cert-card-final" class="certificate-container-final font-serif-tc">
-            
             <!-- 1. 受證者姓名 -->
             <div class="absolute font-bold text-[#800000] tracking-wider" style="top: 425px; left: 240px; width: 320px; font-size: 28px; text-align: center;" id="display-name-final">
                 --
             </div>
-
             <!-- 2. 證書編號 -->
             <div class="absolute text-[11px] text-[#5a3e2b] font-mono font-bold" style="top: 815px; left: 710px; width: 150px;">
                 <span id="cert-id-display">DT2027-4953</span>
             </div>
-
         </div>
     </div>
 
@@ -145,4 +139,248 @@
                 instruction_start: "✅ 起點報到成功！請開始隨香繞境。",
                 instruction_end: "🎉 繞境圓滿完成！請下載您的證明書。",
                 msg_start_detail: "已記錄您的起點報到，請前往終點站。",
-                msg_end_detail:
+                msg_end_detail: "雙向認證已完成，請點擊下方按鈕領取證明書。",
+                err_name: "⚠️ 請先在上方輸入您的姓名，才能開始報到！",
+                btn_download: "下載圓滿功德證明書 (JPG)"
+            },
+            "zh-cn": {
+                page_title: "丁未正科东港迎王平安祭典 - 数字认证",
+                badge_text: "丁未正科・代天巡狩",
+                main_title: "东港迎王平安祭典",
+                main_subtitle: "王船随香绕境・直觉式数字认证",
+                name_input_label: "请输入您的姓名（将印制于证书）：",
+                qr_section_title: "📱 现场 QR Code 扫描点：",
+                qr_start_label: "【起点站 QR Code】",
+                qr_end_label: "【终点站 QR Code】",
+                sim_start_btn: "测试起点链接",
+                sim_end_btn: "测试终点链接",
+                instruction_init: "请在上方输入姓名，然后扫描起点 QR Code",
+                instruction_start: "✅ 起点签到成功！请开始随香绕境。",
+                instruction_end: "🎉 绕境圆满完成！请下载您的证书。",
+                msg_start_detail: "已记录您的起点报到，请前往终点站。",
+                msg_end_detail: "双向认证已完成，请点击下方按钮领取证书。",
+                err_name: "⚠️ 请先在上方输入您的姓名，才能开始报到！",
+                btn_download: "下载圆满功德证书 (JPG)"
+            },
+            en: {
+                page_title: "Donggang Wangchuan Festival 2027 - Certification",
+                badge_text: "Dingwei Year • Divine Patrol",
+                main_title: "Donggang Wangchuan Festival",
+                main_subtitle: "Boat Procession • Live Scan Verification",
+                name_input_label: "Enter your name (to be printed on certificate):",
+                qr_section_title: "📱 On-site QR Code Check-in Points:",
+                qr_start_label: "[Start Point QR Code]",
+                qr_end_label: "[End Point QR Code]",
+                sim_start_btn: "Test Start Link",
+                sim_end_btn: "Test End Link",
+                instruction_init: "Enter your name above, then scan the Start QR Code",
+                instruction_start: "✅ Start Checked-in! Begin Procession.",
+                instruction_end: "🎉 Procession Completed! Download your certificate.",
+                msg_start_detail: "Start point recorded. Proceed to the end point.",
+                msg_end_detail: "Verification complete. Click below to download.",
+                err_name: "⚠️ Please enter your name first!",
+                btn_download: "Download Certificate (JPG)"
+            },
+            es: {
+                page_title: "Festival de Wangchuan de Donggang 2027 - Certificado",
+                badge_text: "Año Dingwei • Patrulla Divina",
+                main_title: "Festival de Wangchuan de Donggang",
+                main_subtitle: "Procesión de Barcos • Verificación en Vivo",
+                name_input_label: "Ingrese su nombre (para el certificado):",
+                qr_section_title: "📱 Puntos de Código QR:",
+                qr_start_label: "[Código QR de Inicio]",
+                qr_end_label: "[Código QR Final]",
+                sim_start_btn: "Probar Inicio",
+                sim_end_btn: "Probar Fin",
+                instruction_init: "Ingrese su nombre arriba y escanee el QR de inicio",
+                instruction_start: "✅ ¡Registro exitoso! Comience la procesión.",
+                instruction_end: "🎉 ¡Procesión completada! Descargue su certificado.",
+                msg_start_detail: "Inicio registrado. Diríjase al punto final.",
+                msg_end_detail: "Verificación completa. Haga clic abajo.",
+                err_name: "⚠️ ¡Ingrese su nombre primero!",
+                btn_download: "Descargar Certificado (JPG)"
+            },
+            jp: {
+                page_title: "丁未年 東港迎王平安祭典 - 認証",
+                badge_text: "丁未正科・代天巡狩",
+                main_title: "東港迎王平安祭典",
+                main_subtitle: "王船巡行同行・現場スキャン認証",
+                name_input_label: "お名前を入力してください（証明書に記載されます）：",
+                qr_section_title: "📱 現地 QR コード：",
+                qr_start_label: "【起点 QR コード】",
+                qr_end_label: "【終点 QR コード】",
+                sim_start_btn: "起点リンクテスト",
+                sim_end_btn: "終点リンクテスト",
+                instruction_init: "お名前を入力してから、起点QRコードをスキャンしてください",
+                instruction_start: "✅ 起点チェックイン完了！巡行を開始してください。",
+                instruction_end: "🎉 巡行修了！証明書をダウンロードしてください。",
+                msg_start_detail: "起点が記録されました。終点へ向かってください。",
+                msg_end_detail: "認証完了しました。下のボタンからダウンロードできます。",
+                err_name: "⚠️ 先にお名前を入力してください！",
+                btn_download: "証明書をダウンロード (JPG)"
+            },
+            kr: {
+                page_title: "정미년 동강 왕선 순행 평안 제전 - 인증",
+                badge_text: "정미정과・대천순수",
+                main_title: "동강 왕선 평안 제전",
+                main_subtitle: "왕선 순행 동행・현장 스캔 인증",
+                name_input_label: "성명을 입력해 주세요 (증명서용):",
+                qr_section_title: "📱 현장 QR 코드 스캔 포인트:",
+                qr_start_label: "[시작점 QR 코드]",
+                qr_end_label: "[도착점 QR 코드]",
+                sim_start_btn: "시작 링크 테스트",
+                sim_end_btn: "도착 링크 테스트",
+                instruction_init: "성명을 먼저 입력한 후, 시작 QR 코드를 스캔하세요",
+                instruction_start: "✅ 시작 체크인 성공! 순행을 시작하세요.",
+                instruction_end: "🎉 순행 완주! 증명서를 다운로드하세요.",
+                msg_start_detail: "시작점이 기록되었습니다. 도착점으로 이동하세요.",
+                msg_end_detail: "인증이 완료되었습니다. 아래 버튼을 눌러 다운로드하세요.",
+                err_name: "⚠️ 성명을 먼저 입력해 주세요!",
+                btn_download: "증명서 다운로드 (JPG)"
+            }
+        };
+
+        let currentLang = 'zh';
+
+        window.onload = function() {
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const startUrl = baseUrl + "?point=start";
+            const endUrl = baseUrl + "?point=end";
+
+            // 確保每次載入都重新生成 QR Code 圖片
+            const qrcodeStartEl = document.getElementById("qrcode-start");
+            const qrcodeEndEl = document.getElementById("qrcode-end");
+            qrcodeStartEl.innerHTML = "";
+            qrcodeEndEl.innerHTML = "";
+
+            new QRCode(qrcodeStartEl, {
+                text: startUrl, width: 128, height: 128, colorDark: "#7F1D1D", colorLight: "#ffffff"
+            });
+            document.getElementById("link-start").href = startUrl;
+
+            new QRCode(qrcodeEndEl, {
+                text: endUrl, width: 128, height: 128, colorDark: "#7F1D1D", colorLight: "#ffffff"
+            });
+            document.getElementById("link-end").href = endUrl;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const point = urlParams.get('point');
+            const dict = i18n[currentLang];
+
+            let savedName = localStorage.getItem('pilgrim_name') || "";
+            let startDone = localStorage.getItem('pilgrim_start_ok') === "true";
+            let endDone = localStorage.getItem('pilgrim_end_ok') === "true";
+
+            if (savedName) {
+                document.getElementById('pilgrim-name').value = savedName;
+            }
+
+            document.getElementById('pilgrim-name').addEventListener('input', function() {
+                localStorage.setItem('pilgrim_name', this.value.trim());
+            });
+
+            if (point === 'start') {
+                let currentName = localStorage.getItem('pilgrim_name') || document.getElementById('pilgrim-name').value.trim();
+                if (!currentName) {
+                    alert(dict['err_name']);
+                    window.location.href = baseUrl;
+                    return;
+                }
+                localStorage.setItem('pilgrim_name', currentName);
+                localStorage.setItem('pilgrim_start_ok', "true");
+                startDone = true;
+                history.replaceState(null, '', baseUrl);
+            } else if (point === 'end') {
+                if (!startDone) {
+                    alert("⚠️ 尚未完成起點報到，請先至起點掃描！");
+                    window.location.href = baseUrl;
+                    return;
+                }
+                localStorage.setItem('pilgrim_end_ok', "true");
+                endDone = true;
+                history.replaceState(null, '', baseUrl);
+            }
+
+            updateUIState(startDone, endDone);
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const dict = i18n[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) el.innerHTML = dict[key];
+            });
+            let startDone = localStorage.getItem('pilgrim_start_ok') === "true";
+            let endDone = localStorage.getItem('pilgrim_end_ok') === "true";
+            updateUIState(startDone, endDone);
+        }
+
+        function updateUIState(s, e) {
+            const dict = i18n[currentLang];
+            const container = document.getElementById('main-container');
+            const header = document.getElementById('header-nav');
+            const card = document.getElementById('status-card');
+            const iconBox = document.getElementById('icon-box');
+            const instruction = document.getElementById('status-instruction');
+            const detail = document.getElementById('status-detail');
+            const downloadBtn = document.getElementById('download-btn');
+
+            if (e) {
+                container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-red";
+                header.className = "flex justify-between items-center mb-4 border-b border-red-300 pb-3 transition-colors duration-300";
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-red border-red-300";
+                iconBox.innerHTML = "🏁";
+                instruction.textContent = dict['instruction_end'];
+                detail.textContent = dict['msg_end_detail'];
+                downloadBtn.classList.remove('hidden');
+            } else if (s) {
+                container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-green";
+                header.className = "flex justify-between items-center mb-4 border-b border-green-300 pb-3 transition-colors duration-300";
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-green border-green-300";
+                iconBox.innerHTML = "✅";
+                instruction.textContent = dict['instruction_start'];
+                detail.textContent = dict['msg_start_detail'];
+                downloadBtn.classList.add('hidden');
+            } else {
+                container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-initial";
+                header.className = "flex justify-between items-center mb-4 border-b border-amber-200 pb-3 transition-colors duration-300";
+                card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-initial border-amber-300";
+                iconBox.innerHTML = "📱";
+                instruction.textContent = dict['instruction_init'];
+                detail.textContent = "";
+                downloadBtn.classList.add('hidden');
+            }
+        }
+
+        function downloadCertificateFinal() {
+            const name = localStorage.getItem('pilgrim_name') || document.getElementById('pilgrim-name').value.trim();
+            const dict = i18n[currentLang];
+            if (!name) {
+                alert(dict['err_name']);
+                document.getElementById('pilgrim-name').focus();
+                return;
+            }
+
+            document.getElementById('display-name-final').textContent = name;
+            document.getElementById('cert-id-display').textContent = "DT2027-" + Math.floor(1000 + Math.random() * 9000);
+            
+            const certElement = document.getElementById('cert-card-final');
+            const templateHolder = document.getElementById('certificate-template');
+            templateHolder.style.left = "0px";
+
+            html2canvas(certElement, { 
+                scale: 2, 
+                useCORS: true, 
+                logging: false 
+            }).then(canvas => {
+                templateHolder.style.left = "-9999px";
+                const link = document.createElement('a');
+                link.download = `Donggang_Festival_Certificate_${name}.jpg`;
+                link.href = canvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
