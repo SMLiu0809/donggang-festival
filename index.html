@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="page_title">丁未正科東港迎王平安祭典 - 數位繞境認證</title>
+    <title data-i18n="page_title">丁未正科東港迎王平安祭典 - 數位認證</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -15,13 +15,20 @@
     <style>
         .font-title { font-family: 'Ma Shan Zheng', cursive; }
         .font-serif-tc { font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', serif; }
+        
+        /* 典雅證書邊框與背景 */
         .certificate-border {
-            border: 12px double #8B0000;
+            border: 14px double #8B0000;
             background-color: #FFFDF0;
             background-image: radial-gradient(#F5E6CC 15%, transparent 16%), radial-gradient(#F5E6CC 15%, transparent 16%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            width: 800px;
+            height: 600px;
+            position: relative;
+            box-sizing: border-box;
         }
+        
         .locked { opacity: 0.5; pointer-events: none; }
         /* 綠燈狀態 */
         .state-green { background-color: #DCFCE7; border-color: #166534; color: #166534; }
@@ -105,30 +112,44 @@
 
     </div>
 
-    <!-- 隱藏的證書生成區域 (套用精美母版圖像) -->
+    <!-- 內建精美設計的證書生成區域 (不依賴外部圖片，保證絕不破圖) -->
     <div id="certificate-template" class="fixed -left-[9999px] top-0">
-        <div id="cert-card-final" class="relative font-serif-tc text-[#5a3e2b]" style="background-image: url('https://i.imgur.com/T9M97e7.jpg'); background-size: cover; background-position: center; width: 800px; height: 600px;">
-            
-            <!-- 1. 證書編號 -->
-            <div class="cert-text-abs text-[12px] text-[#8a7355]" style="position:absolute; top: 74px; right: 65px; width: 100px; text-align: right;">
-                No. <span id="cert-id-display" class="font-mono">DT2027-0000</span>
+        <div id="cert-card-final" class="certificate-border p-10 text-center flex flex-col justify-between font-serif-tc text-amber-950">
+            <!-- 浮水印 -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                <span class="text-9xl font-title text-red-900">東港迎王</span>
             </div>
 
-            <!-- 2. 受證者姓名 -->
-            <div class="cert-text-abs font-bold text-[#800000] tracking-wider" style="position:absolute; top: 320px; left: 0; width: 800px; font-size: 60px; text-align: center;" id="display-name-final">
-                --
+            <!-- 頂部標題 -->
+            <div class="relative z-10">
+                <p class="text-red-800 font-bold tracking-widest text-xs uppercase" data-i18n="cert_top_sub">Dingwei Year Grand Wangchuan Procession</p>
+                <h2 class="text-3xl md:text-4xl font-title text-red-900 mt-1" data-i18n="cert_main_title">東港迎王平安祭典</h2>
+                <p class="text-sm font-bold text-amber-900 tracking-wider">Pilgrimage Participation Certificate</p>
             </div>
 
-            <!-- 3. 英文日期 -->
-            <div class="cert-text-abs text-[14px] italic text-[#5a3e2b]" style="position:absolute; top: 518px; left: 160px; width: 300px; text-align: left;">
-                Issue Date: October 2027 (Dingwei Year)
-            </div>
-            
-            <!-- 4. 中文日期 -->
-            <div class="cert-text-abs text-[14px] text-[#5a3e2b]" style="position:absolute; top: 518px; right: 160px; width: 300px; text-align: right;">
-                發證日期：西元 2027 年 10 月 (丁未年)
+            <!-- 中間受證者區域 -->
+            <div class="relative z-10 space-y-2 my-auto">
+                <p class="text-base" data-i18n="cert_salutation">茲證明貴賓 / 香客</p>
+                <p class="text-5xl font-bold text-red-800 tracking-wider underline decoration-dotted underline-offset-8 py-2" id="display-name-final">--</p>
+                <p class="text-sm leading-relaxed px-6 text-justify text-amber-900" data-i18n="cert_body">
+                    誠心參與丁未正科東港迎王平安祭典，隨王船隊伍自起點至終點全程行腳繞境，祈求平安吉祥、福慧圓滿。特頒此證，以茲誌慶。<br>
+                    <span class="italic text-xs text-amber-800">May the blessings of Wangye bring peace, health and prosperity to all.</span>
+                </p>
             </div>
 
+            <!-- 底部署名與日期 -->
+            <div class="relative z-10 pt-4 flex justify-between items-end border-t border-amber-300 text-xs text-amber-900">
+                <div class="text-left space-y-1">
+                    <p>證書編號：<span id="cert-id-display" class="font-mono font-bold">DT2027-0000</span></p>
+                    <p data-i18n="cert_date">發證日期：西元 2027 年 10 月 (丁未年)</p>
+                </div>
+                <div class="text-right relative">
+                    <p class="font-bold" data-i18n="cert_issuer">東港東隆宮 奉獻</p>
+                    <div class="absolute -top-7 -right-2 w-16 h-16 border-2 border-red-700 rounded-full flex items-center justify-center text-red-700 font-bold text-[9px] transform -rotate-12 opacity-80 pointer-events-none" data-i18n="cert_seal">
+                        東港迎王<br>平安吉祥
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -152,7 +173,14 @@
                 msg_start_detail: "已記錄您的起點報到，請前往終點站。",
                 msg_end_detail: "雙向認證已完成，請點擊下方按鈕領取證明書。",
                 err_name: "⚠️ 請先在上方輸入您的姓名，才能開始報到！",
-                btn_download: "下載圓滿功德證明書 (JPG)"
+                btn_download: "下載圓滿功德證明書 (JPG)",
+                cert_top_sub: "丁未年・代天巡狩護國庇民",
+                cert_main_title: "東港迎王平安祭典",
+                cert_salutation: "茲證明貴賓 / 香客",
+                cert_body: "誠心參與丁未正科東港迎王平安祭典，隨王船隊伍自起點至終點全程行腳繞境，祈求平安吉祥、福慧圓滿。特頒此證，以茲誌慶。",
+                cert_date: "發證日期：西元 2027 年 10 月 (丁未年)",
+                cert_issuer: "東港東隆宮 奉獻",
+                cert_seal: "東港迎王<br>平安吉祥"
             },
             "zh-cn": {
                 page_title: "丁未正科东港迎王平安祭典 - 数字认证",
@@ -171,7 +199,14 @@
                 msg_start_detail: "已记录您的起点报到，请前往终点站。",
                 msg_end_detail: "双向认证已完成，请点击下方按钮领取证书。",
                 err_name: "⚠️ 请先在上方输入您的姓名，才能开始报到！",
-                btn_download: "下载圆满功德证书 (JPG)"
+                btn_download: "下载圆满功德证书 (JPG)",
+                cert_top_sub: "丁未年・代天巡狩护国庇民",
+                cert_main_title: "东港迎王平安祭典",
+                cert_salutation: "兹证明贵宾 / 香客",
+                cert_body: "诚心参与丁未正科东港迎王平安祭典，随王船队伍自起点至终点全程行脚绕境，祈求平安吉祥、福慧圆满。特颁此证，以兹誌庆。",
+                cert_date: "发证日期：公元 2027 年 10 月 (丁未年)",
+                cert_issuer: "东港东隆宫 奉献",
+                cert_seal: "东港迎王<br>平安吉祥"
             },
             en: {
                 page_title: "Donggang Wangchuan Festival 2027 - Certification",
@@ -190,7 +225,14 @@
                 msg_start_detail: "Start point recorded. Proceed to the end point.",
                 msg_end_detail: "Verification complete. Click below to download.",
                 err_name: "⚠️ Please enter your name first!",
-                btn_download: "Download Certificate (JPG)"
+                btn_download: "Download Certificate (JPG)",
+                cert_top_sub: "Dingwei Year • Grand Wangchuan Procession",
+                cert_main_title: "Donggang Wangchuan Festival",
+                cert_salutation: "This is to certify that",
+                cert_body: "Sincerely participated in the Dingwei Year Donggang Wangchuan Festival procession from start to finish, seeking peace, blessings, and wisdom. This certificate is proudly presented.",
+                cert_date: "Issue Date: October 2027 (Dingwei Year)",
+                cert_issuer: "Donggang Donglong Temple",
+                cert_seal: "Donggang<br>Wangchuan"
             },
             es: {
                 page_title: "Festival de Wangchuan de Donggang 2027 - Certificado",
@@ -209,7 +251,14 @@
                 msg_start_detail: "Inicio registrado. Diríjase al punto final.",
                 msg_end_detail: "Verificación completa. Haga clic abajo.",
                 err_name: "⚠️ ¡Ingrese su nombre primero!",
-                btn_download: "Descargar Certificado (JPG)"
+                btn_download: "Descargar Certificado (JPG)",
+                cert_top_sub: "Año Dingwei • Procesión de Wangchuan",
+                cert_main_title: "Festival de Wangchuan de Donggang",
+                cert_salutation: "Por la presente se certifica que",
+                cert_body: "Participó sinceramente en la procesión del Festival de Wangchuan de Donggang de principio a fin, buscando la paz y las bendiciones. Se otorga con orgullo el presente certificado.",
+                cert_date: "Fecha de emisión: Octubre de 2027 (Año Dingwei)",
+                cert_issuer: "Templo Donglong de Donggang",
+                cert_seal: "Donggang<br>Wangchuan"
             },
             jp: {
                 page_title: "丁未年 東港迎王平安祭典 - 認証",
@@ -228,7 +277,14 @@
                 msg_start_detail: "起点が記録されました。終点へ向かってください。",
                 msg_end_detail: "認証完了しました。下のボタンからダウンロードできます。",
                 err_name: "⚠️ 先にお名前を入力してください！",
-                btn_download: "証明書をダウンロード (JPG)"
+                btn_download: "証明書をダウンロード (JPG)",
+                cert_top_sub: "歳次丁未年・王船巡行",
+                cert_main_title: "東港迎王平安祭典",
+                cert_salutation: "ここに証明する",
+                cert_body: "丁未正科東港迎王平安祭典の王船巡行に誠心誠意参加し、起点から終点まで全行程を完遂されたことを称え、ここに本証を授与いたします。",
+                cert_date: "発行日：2027年10月 (丁未年)",
+                cert_issuer: "東港東隆宮 奉納",
+                cert_seal: "東港迎王<br>平安吉祥"
             },
             kr: {
                 page_title: "정미년 동강 왕선 순행 평안 제전 - 인증",
@@ -247,7 +303,14 @@
                 msg_start_detail: "시작점이 기록되었습니다. 도착점으로 이동하세요.",
                 msg_end_detail: "인증이 완료되었습니다. 아래 버튼을 눌러 다운로드하세요.",
                 err_name: "⚠️ 성명을 먼저 입력해 주세요!",
-                btn_download: "증명서 다운로드 (JPG)"
+                btn_download: "증명서 다운로드 (JPG)",
+                cert_top_sub: "정미년・왕선 순행 제전",
+                cert_main_title: "동강 왕선 평안 제전",
+                cert_salutation: "위 사람을 증명합니다",
+                cert_body: "정미정과 동강 왕선 평안 제전의 왕선 순행 행렬에 성심으로 참여하여 시작점에서 도착점까지 전 과정을 완주하였기에 이 증명서를 수여합니다.",
+                cert_date: "발급일: 2027년 10월 (정미년)",
+                cert_issuer: "동강 동륭궁 헌납",
+                cert_seal: "동강왕선<br>平安吉祥"
             }
         };
 
@@ -275,7 +338,6 @@
             const point = urlParams.get('point');
             const dict = i18n[currentLang];
 
-            // 讀取記憶體中的狀態與姓名
             let savedName = localStorage.getItem('pilgrim_name') || "";
             let startDone = localStorage.getItem('pilgrim_start_ok') === "true";
             let endDone = localStorage.getItem('pilgrim_end_ok') === "true";
@@ -284,24 +346,21 @@
                 document.getElementById('pilgrim-name').value = savedName;
             }
 
-            // 即時同步輸入的姓名到 localStorage
             document.getElementById('pilgrim-name').addEventListener('input', function() {
                 localStorage.setItem('pilgrim_name', this.value.trim());
             });
 
-            // 處理掃描點判定
             if (point === 'start') {
-                // 優先抓取 localStorage 內的姓名，若無才抓輸入框
                 let currentName = localStorage.getItem('pilgrim_name') || document.getElementById('pilgrim-name').value.trim();
                 if (!currentName) {
                     alert(dict['err_name']);
-                    window.location.href = baseUrl; // 打回首頁叫他填名字
+                    window.location.href = baseUrl;
                     return;
                 }
                 localStorage.setItem('pilgrim_name', currentName);
                 localStorage.setItem('pilgrim_start_ok', "true");
                 startDone = true;
-                history.replaceState(null, '', baseUrl); // 清除網址參數
+                history.replaceState(null, '', baseUrl);
             } else if (point === 'end') {
                 if (!startDone) {
                     alert("⚠️ 尚未完成起點報到，請先至起點掃描！");
@@ -339,7 +398,6 @@
             const downloadBtn = document.getElementById('download-btn');
 
             if (e) {
-                // 終點達成 (紅燈)
                 container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-red";
                 header.className = "flex justify-between items-center mb-4 border-b border-red-300 pb-3 transition-colors duration-300";
                 card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-red border-red-300";
@@ -348,7 +406,6 @@
                 detail.textContent = dict['msg_end_detail'];
                 downloadBtn.classList.remove('hidden');
             } else if (s) {
-                // 起點達成 (綠燈)
                 container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-green";
                 header.className = "flex justify-between items-center mb-4 border-b border-green-300 pb-3 transition-colors duration-300";
                 card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-green border-green-300";
@@ -357,7 +414,6 @@
                 detail.textContent = dict['msg_start_detail'];
                 downloadBtn.classList.add('hidden');
             } else {
-                // 初始狀態 (黃燈)
                 container.className = "max-w-xl w-full bg-white/95 backdrop-blur shadow-2xl rounded-xl p-6 md:p-8 border-4 border-amber-600 transition-all duration-300 state-initial";
                 header.className = "flex justify-between items-center mb-4 border-b border-amber-200 pb-3 transition-colors duration-300";
                 card.className = "p-6 rounded-xl border-2 transition-all duration-500 text-center space-y-3 shadow-lg state-initial border-amber-300";
@@ -377,20 +433,19 @@
                 return;
             }
 
-            // 更新畫面上隱藏證書的姓名與隨機編號
             document.getElementById('display-name-final').textContent = name;
             document.getElementById('cert-id-display').textContent = "DT2027-" + Math.floor(1000 + Math.random() * 9000);
             
             const certElement = document.getElementById('cert-card-final');
             const templateHolder = document.getElementById('certificate-template');
-            templateHolder.style.left = "0px"; // 移到畫面上準備截圖
+            templateHolder.style.left = "0px";
 
             html2canvas(certElement, { 
                 scale: 2, 
                 useCORS: true, 
                 logging: false 
             }).then(canvas => {
-                templateHolder.style.left = "-9999px"; // 截完圖移開
+                templateHolder.style.left = "-9999px";
                 const link = document.createElement('a');
                 link.download = `Donggang_Festival_Certificate_${name}.jpg`;
                 link.href = canvas.toDataURL('image/jpeg', 0.95);
