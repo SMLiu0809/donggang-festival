@@ -15,11 +15,11 @@
     <style>
         .font-serif-tc { font-family: 'Noto Serif TC', serif; }
         
-        /* 國際版證書母版樣式 */
+        /* 國際版證書母版樣式 (直接使用高品質圖床確保穩定載入與截圖) */
         .certificate-container-final {
             width: 800px;
             height: 600px;
-            background-image: url('certificate-bg.jpg');
+            background-image: url('https://i.imgur.com/T9M97e7.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -82,7 +82,7 @@
                 <span data-i18n="btn_download">下載圓滿功德證明書</span>
             </button>
 
-            <!-- 現場實體掃描點 QR Code 總覽區 (已修復圖片生成) -->
+            <!-- 現場實體掃描點 QR Code 總覽區 -->
             <div class="border-t border-amber-200 pt-4 mt-2">
                 <p class="text-xs font-bold text-amber-900 mb-3 text-center font-serif-tc" data-i18n="qr_section_title">📱 現場 QR Code 掃描點（供遊客依序掃描）：</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
@@ -222,7 +222,7 @@
             kr: {
                 page_title: "정미년 동강 왕선 순행 평안 제전 - 인증",
                 badge_text: "정미정과・대천순수",
-                main_title: "동강 왕선 평안 제전",
+                main_title: "정미년 동강 왕선 순행 평안 제전",
                 main_subtitle: "왕선 순행 동행・현장 스캔 인증",
                 name_input_label: "성명을 입력해 주세요 (증명서용):",
                 qr_section_title: "📱 현장 QR 코드 스캔 포인트:",
@@ -247,7 +247,6 @@
             const startUrl = baseUrl + "?point=start";
             const endUrl = baseUrl + "?point=end";
 
-            // 確保每次載入都重新生成 QR Code 圖片
             const qrcodeStartEl = document.getElementById("qrcode-start");
             const qrcodeEndEl = document.getElementById("qrcode-end");
             qrcodeStartEl.innerHTML = "";
@@ -369,9 +368,11 @@
             const templateHolder = document.getElementById('certificate-template');
             templateHolder.style.left = "0px";
 
+            // 調整 html2canvas 參數以完美允許跨域截圖
             html2canvas(certElement, { 
                 scale: 2, 
                 useCORS: true, 
+                allowTaint: true,
                 logging: false 
             }).then(canvas => {
                 templateHolder.style.left = "-9999px";
